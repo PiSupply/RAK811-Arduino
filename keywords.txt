@@ -1,0 +1,62 @@
+#######################################
+# Syntax Coloring Map For RAK811
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+RAK811	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+rk_recvData	KEYWORD2
+rk_getVersion	KEYWORD2
+rk_getBand	KEYWORD2
+rk_sleep	KEYWORD2
+rk_reset	KEYWORD2
+rk_reload	KEYWORD2
+rk_setRate	KEYWORD2
+rk_setWorkingMode	KEYWORD2
+isUidValid	KEYWORD2
+rk_initOTAA	KEYWORD2
+rk_initABP	KEYWORD2
+rk_joinLoRaNetwork	KEYWORD2
+rk_getSignal	KEYWORD2
+rk_setConfig	KEYWORD2
+rk_getConfig	KEYWORD2
+rk_sendData	KEYWORD2
+rk_getP2PConfig	KEYWORD2
+rk_initP2P	KEYWORD2
+rk_sendP2PData	KEYWORD2
+rk_recvP2PData	KEYWORD2
+rk_stopSendP2PData	KEYWORD2
+rk_stopRecvP2PData	KEYWORD2
+rk_checkStatusStatistics	KEYWORD2
+rk_cleanStatusStatistics	KEYWORD2
+rk_setUARTConfig	KEYWORD2
+sendRawCommand	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+LoRaWAN	LITERAL1
+LoRaP2P	LITERAL1
+OTAA	LITERAL1
+ABP	LITERAL1
+STATUS_RECV_DATA	LITERAL1
+STATUS_TX_COMFIRMED	LITERAL1
+STATUS_TX_UNCOMFIRMED	LITERAL1
+STATUS_JOINED_SUCCESS	LITERAL1
+STATUS_JOINED_FAILED	LITERAL1
+STATUS_TX_TIMEOUT	LITERAL1
+STATUS_RX2_TIMEOUT	LITERAL1
+STATUS_DOWNLINK_REPEATED	LITERAL1
+STATUS_WAKE_UP	LITERAL1
+STATUS_P2PTX_COMPLETE	LITERAL1
+STATUS_UNKNOWN	LITERAL1
