@@ -1,35 +1,47 @@
-
+//IoT LoRa Node Shield ABP Example
+//By Ryan Walmsley May 2019
+//(C) Pi Supply 2019
+//Based off RAK Wireless Code
 
 #include "RAK811.h"
 #include "SoftwareSerial.h"
 #define WORK_MODE LoRaWAN   //  LoRaWAN or LoRaP2P
 #define JOIN_MODE ABP    //  OTAA or ABP
 #if JOIN_MODE == OTAA
-String DevEui = "60C5A8FFFE000001";
-String AppEui = "70B3D57EF00047C0";
-String AppKey = "5D833B4696D5E01E2F8DC880E30BA5FE";
+String DevEui = "";
+String AppEui = "";
+String AppKey = "";
 #else JOIN_MODE == ABP
-String NwkSKey = "DAC93A91C7C258F8403BC68C50381127";
-String AppSKey = "439F5ACF10FCFBED7D54485D2CF1CE15";
-String DevAddr = "260113FF";
+String NwkSKey = "DAC93A91C7C258F8403BC68C50381127"; // Fill this out
+String AppSKey = "439F5ACF10FCFBED7D54485D2CF1CE15"; // Fill this out
+String DevAddr = "260113FF"; // Fill this out
 #endif
 #define TXpin 11   // Set the virtual serial port pins
 #define RXpin 10
-#define ATSerial Serial
-SoftwareSerial DebugSerial(RXpin,TXpin);    // Declare a virtual serial port
+#define DebugSerial Serial
+SoftwareSerial RAKSerial(RXpin,TXpin);    // Declare a virtual serial port
 char* buffer = "72616B776972656C657373";
-
 bool InitLoRaWAN(void);
-RAK811 RAKLoRa(ATSerial,DebugSerial);
+RAK811 RAKLoRa(RAKSerial,DebugSerial);
+
+int RESET_PIN = 12;
 
 
 void setup() {
+ //Define Reset Pin
+ pinMode(RESET_PIN, OUTPUT);
+ //Setup Debug Serial on USB Port
  DebugSerial.begin(9600);
  while(DebugSerial.read()>= 0) {}
  while(!DebugSerial);
+ //Print debug info
  DebugSerial.println("StartUP");
-
- ATSerial.begin(9600); // Note: Please manually set the baud rate of the WisNode device to 9600.
+ DebugSerial.println("Reset");
+ //Reset the RAK Module
+ digitalWrite(RESET_PIN, LOW);   // turn the pin low to Reset
+ digitalWrite(RESET_PIN, HIGH);    // then high to enable
+ DebugSerial.println("Success");
+ RAKSerial.begin(9600); // Arduino Shield
  delay(100);
  DebugSerial.println(RAKLoRa.rk_getVersion());
  delay(200);
@@ -44,6 +56,9 @@ bool InitLoRaWAN(void)
 {
   if (RAKLoRa.rk_setWorkingMode(WORK_MODE))
   {
+    RAKLoRa.rk_recvData();
+    RAKLoRa.rk_recvData();
+    RAKLoRa.rk_recvData();
     if (RAKLoRa.rk_initABP(DevAddr, NwkSKey, AppSKey))
     {
       DebugSerial.println("You init ABP parameter is OK!");

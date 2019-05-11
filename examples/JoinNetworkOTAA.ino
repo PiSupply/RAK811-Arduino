@@ -5,31 +5,39 @@
 #define WORK_MODE LoRaWAN   //  LoRaWAN or LoRaP2P
 #define JOIN_MODE OTAA    //  OTAA or ABP
 #if JOIN_MODE == OTAA
-String DevEui = "60C5A8FFFE001010";
-String AppEui = "70B3D57ED000965C";
-String AppKey = "B429C9C903D8442C5BF684FB5EF00219";
+String DevEui = "60C5A8FFFE001010"; // Fill this out
+String AppEui = "70B3D57ED000965C"; // Fill this out
+String AppKey = "B429C9C903D8442C5BF684FB5EF00219"; // Fill This out
 #else JOIN_MODE == ABP
-String NwkSKey = "3432567afde4525e7890cfea234a5821";
-String AppSKey = "a48adfc393a0de458319236537a11d90";
-String DevAddr = "00112233";
+String NwkSKey = "";
+String AppSKey = "";
+String DevAddr = "";
 #endif
 #define TXpin 11   // Set the virtual serial port pins
 #define RXpin 10
-#define ATSerial Serial
-SoftwareSerial DebugSerial(RXpin,TXpin);    // Declare a virtual serial port
+#define DebugSerial Serial
+SoftwareSerial RAKSerial(RXpin,TXpin);    // Declare a virtual serial port
 char* buffer = "72616B776972656C657373";
-
+int RESET_PIN = 12;
 bool InitLoRaWAN(void);
-RAK811 RAKLoRa(ATSerial,DebugSerial);
+RAK811 RAKLoRa(RAKSerial,DebugSerial);
 
 
 void setup() {
+ //Define Reset Pin
+ pinMode(RESET_PIN, OUTPUT);
+ //Setup Debug Serial on USB Port
  DebugSerial.begin(9600);
  while(DebugSerial.read()>= 0) {}
  while(!DebugSerial);
+ //Print debug info
  DebugSerial.println("StartUP");
-
- ATSerial.begin(9600); // Note: Please manually set the baud rate of the WisNode device to 9600.
+ DebugSerial.println("Reset");
+ //Reset the RAK Module
+ digitalWrite(RESET_PIN, LOW);   // turn the pin low to Reset
+ digitalWrite(RESET_PIN, HIGH);    // then high to enable
+ DebugSerial.println("Success");
+ RAKSerial.begin(9600); // Arduino Shield
  delay(100);
  DebugSerial.println(RAKLoRa.rk_getVersion());
  delay(200);
@@ -37,13 +45,16 @@ void setup() {
  delay(200);
 
  while (!InitLoRaWAN());
- 
+
 }
 
 bool InitLoRaWAN(void)
 {
   if (RAKLoRa.rk_setWorkingMode(WORK_MODE))
   {
+    RAKLoRa.rk_recvData();
+    RAKLoRa.rk_recvData();
+    RAKLoRa.rk_recvData();
     if (RAKLoRa.rk_initOTAA(DevEui, AppEui, AppKey))
     {
       DebugSerial.println("You init OTAA parameter is OK!");
