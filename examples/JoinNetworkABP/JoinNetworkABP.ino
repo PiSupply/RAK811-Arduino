@@ -12,9 +12,9 @@ String DevEui = "";
 String AppEui = "";
 String AppKey = "";
 #else JOIN_MODE == ABP
-String NwkSKey = "<PUT YOUR KEY HERE FROM TTN CONSOLE>"; // Fill this out
-String AppSKey = "<PUT YOUR KEY HERE FROM TTN CONSOLE>"; // Fill this out
-String DevAddr = "<PUT YOUR KEY HERE FROM TTN CONSOLE>"; // Fill this out
+String NwkSKey = "FF62772E4535CDBD4DC746168B48DC9D"; // Fill this out
+String AppSKey = "D84D890C81CE8F8D29E980E4D9169F9B"; // Fill this out
+String DevAddr = "26011E34"; // Fill this out
 #endif
 #define TXpin 11   // Set the virtual serial port pins
 #define RXpin 10
@@ -49,6 +49,7 @@ void setup() {
  delay(200);
 
  while (!InitLoRaWAN());
+ Serial.println("Pass");
 
 }
 bool InitLoRaWAN(void)
@@ -72,7 +73,8 @@ bool InitLoRaWAN(void)
 }
 
 void loop() {
-  int packetsflag = 1; // 0: unconfirmed packets, 1: confirmed packets
+  Serial.println("You join Network success!");
+  int packetsflag = 0; // 0: unconfirmed packets, 1: confirmed packets
   if (RAKLoRa.rk_sendData(packetsflag, 1, buffer))
   {
     for (unsigned long start = millis(); millis() - start < 90000L;)

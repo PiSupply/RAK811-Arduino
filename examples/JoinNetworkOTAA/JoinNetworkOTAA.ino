@@ -5,9 +5,9 @@
 #define WORK_MODE LoRaWAN   //  LoRaWAN or LoRaP2P
 #define JOIN_MODE OTAA    //  OTAA or ABP
 #if JOIN_MODE == OTAA
-String DevEui = "<PUT YOUR KEY HERE FROM TTN CONSOLE>"; // Fill this out
-String AppEui = "<PUT YOUR KEY HERE FROM TTN CONSOLE>"; // Fill this out
-String AppKey = "<PUT YOUR KEY HERE FROM TTN CONSOLE>"; // Fill This out
+String DevEui = "00F9D51F899A20BD"; // Fill this out
+String AppEui = "70B3D57ED0013D25"; // Fill this out
+String AppKey = "AB191E16516ED3C5D8534240C29BF557"; // Fill This out
 #else JOIN_MODE == ABP
 String NwkSKey = "";
 String AppSKey = "";
@@ -74,7 +74,7 @@ bool InitLoRaWAN(void)
             DebugSerial.println("You join Network Fail!");
             flag = true;
             DebugSerial.println("The device will try to join again after 5s");
-            delay(5000);
+            delay(1000);
           }
         }
         if (flag == false)
@@ -90,7 +90,9 @@ bool InitLoRaWAN(void)
 }
 
 void loop() {
-  int packetsflag = 1; // 0: unconfirmed packets, 1: confirmed packets
+  
+   DebugSerial.println("start!");
+  int packetsflag = 0; // 0: unconfirmed packets, 1: confirmed packets
   if (RAKLoRa.rk_sendData(packetsflag, 1, buffer))
   {
     for (unsigned long start = millis(); millis() - start < 90000L;)
@@ -107,3 +109,4 @@ void loop() {
     while (1);
   }
 }
+
