@@ -142,6 +142,16 @@ class RAK811
   */
   bool rk_sendData(int type, int port, char* datahex);
 
+  /*
+   * Send Bytes
+   * type : Packet type.(0,1)  0:send unconfirmed packets.  1:send confirmed packets.
+   * port : The port number.(1-223)
+   * buffer : uint8_t inputBuffer
+   * size : Size of buffer
+   * This function can only be used in module work in LoRaWAN mode.
+   */
+   bool rk_sendBytes(int type, int port, uint8_t* buffer, int bufSize);
+
  /*
   * Returns the data or event information received by the module.
   *

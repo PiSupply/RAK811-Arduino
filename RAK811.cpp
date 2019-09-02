@@ -3,6 +3,7 @@
  *
  * @Author Chace.cao
  * @Author john.zou
+ * @Author Ryan.Walmsley
  * @Date 11/05/2017
  *
  */
@@ -18,6 +19,25 @@ extern "C" {
 /*
   @param serial Needs to be an already opened Stream ({Software/Hardware}Serial) to write to and read from.
 */
+
+
+// Convert Bytes To String Function by Rob Bricheno
+const char *hexdigits = "0123456789ABCDEF";
+
+char* convertBytesToString (uint8_t* inputBuffer, int inputSize) {
+    int i, j;
+    char* compositionBuffer = (char*) malloc(inputSize*2 + 1);
+    for (i = j = 0; i < inputSize; i++) {
+        unsigned char c;
+        c = (inputBuffer[i] >> 4) & 0xf;
+        compositionBuffer[j++] = hexdigits[c];
+        c = inputBuffer[i] & 0xf;
+        compositionBuffer[j++] = hexdigits[c];
+    }
+    return compositionBuffer;
+}
+
+
 RAK811::RAK811(Stream& serial,Stream& serial1):
 _serial(serial),_serial1(serial1)
 {
@@ -225,6 +245,24 @@ bool RAK811::rk_sendData(int type, int port, char* datahex)
   String command = "";
   command = "at+send=" + (String)type + "," + port + "," + datahex;
 //  Serial.println(command);
+  String ret = sendRawCommand(command);
+  if (ret.startsWith("OK"))
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+bool RAK811::rk_sendBytes(int type, int port, uint8_t* buffer, int bufSize)
+{
+  //Send Bytes Command
+
+  String command = "";
+  command = "at+send=" + (String)type + "," + port + "," + convertBytesToString(buffer,bufSize);
+  //Serial.println(command);
   String ret = sendRawCommand(command);
   if (ret.startsWith("OK"))
   {
