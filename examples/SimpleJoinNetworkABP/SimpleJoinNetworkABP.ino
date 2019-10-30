@@ -1,4 +1,4 @@
-w //Simple Join Network via ABP Example
+//Simple Join Network via ABP Example
 //By Ryan Walmsley (C) Pi Supply 2019
 
 //Import the RAK811 Library
