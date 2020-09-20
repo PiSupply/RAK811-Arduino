@@ -261,7 +261,7 @@ bool RAK811::rk_sendBytes(int type, int port, uint8_t* buffer, int bufSize)
   //Send Bytes Command
 
   String command = "";
-  char* p = convertBytesToString(inputBuffer, inputSize);
+  char* p = convertBytesToString(buffer, bufSize);
   command = "at+send=" + (String)type + "," + port + "," + p;
   free(p);
   //Serial.println(command);
