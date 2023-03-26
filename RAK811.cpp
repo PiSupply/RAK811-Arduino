@@ -34,6 +34,7 @@ char* convertBytesToString (uint8_t* inputBuffer, int inputSize) {
         c = inputBuffer[i] & 0xf;
         compositionBuffer[j++] = hexdigits[c];
     }
+    compositionBuffer[j++] = 0; // New line!
     return compositionBuffer;
 }
 
